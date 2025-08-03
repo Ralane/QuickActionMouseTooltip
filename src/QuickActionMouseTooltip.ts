@@ -1,4 +1,5 @@
 import {Plugin, SettingsTypes, UIManager, UIManagerScope} from "@highlite/plugin-api";
+import TooltipCss from "../resources/css/base.css";
 
 export default class QuickActionMouseTooltip extends Plugin {
      pluginName = 'Quick Action Mouse Tooltip';
@@ -56,46 +57,41 @@ export default class QuickActionMouseTooltip extends Plugin {
     start() {
         this.log('QuickActionMouseTooltip started');
 
-        if(this.settings.enable.value) {
-            this.addPluginStyle();
+        // Mouse move handler to follow the mouse
+        this.mouseMoveHandler = (moveEvent: MouseEvent) => {            
+            this.updateTooltipPosition(moveEvent);
+            this.updateTooltipText();
+        };
 
-            // Mouse move handler to follow the mouse
-            this.mouseMoveHandler = (moveEvent: MouseEvent) => {            
-                this.updateTooltipPosition(moveEvent);
-                this.updateTooltipText();
-            };
+        document.addEventListener('mousemove', this.mouseMoveHandler);
+    }
 
-            document.addEventListener('mousemove', this.mouseMoveHandler);
-        }
+    addPluginStyle() {
+        // Create Scoped CSS
+        let styleTag : HTMLStyleElement = document.createElement("style");
+        styleTag.innerText = `${TooltipCss}`;
+        this.tooltipUI?.appendChild(styleTag);
     }
 
     /**
      * Stops the plugin, removes event listeners and tooltip.
      */
     stop() {
-        this.removeTooltip();
         if (this.mouseMoveHandler) {
             document.removeEventListener('mousemove', this.mouseMoveHandler);
             this.mouseMoveHandler = null;
         }
+        this.removeTooltip();
+        this.quickActionText = null;
     }
 
     // Need to update on game loop as well in case entities wander into our mouse without the mouse moving
     GameLoop_update(): void {
-        if(this.settings.enable.value) {
-            if(!this.quickActionText) {
-                this.quickActionText = document.querySelector('#hs-quick-action-text') as HTMLElement
-            }
+        if(!this.quickActionText) {
+            this.quickActionText = document.querySelector('#hs-quick-action-text') as HTMLElement
+        }
 
-            this.updateTooltipText();
-        }
-        else {
-            this.removeTooltip();
-            if (this.mouseMoveHandler) {
-                document.removeEventListener('mousemove', this.mouseMoveHandler);
-                this.mouseMoveHandler = null;
-            }
-        }
+        this.updateTooltipText();
     };
 
     /**
@@ -130,34 +126,6 @@ export default class QuickActionMouseTooltip extends Plugin {
             this.tooltipUI.remove();
             this.tooltipUI = null;
         }
-    }
-
-    /**
-     * Injects the plugin's tooltip CSS styles into the document head.
-     */
-    private addPluginStyle(): void {
-        this.tooltipStyle = document.createElement('style');
-        this.tooltipStyle.setAttribute('data-item-panel', 'true');
-        this.tooltipStyle.textContent = `
-          .hlt-tooltip {
-            position: fixed;
-            background: rgba(30, 30, 40, 0.97);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
-            z-index: 9999;
-            font-family: inherit;
-            pointer-events: none;
-            max-width: 320px;
-            font-size: 14px;
-          }
-          .hlt-tooltip-title {
-            font-weight: bold;
-            font-size: 15px;
-            display: block;
-          }`;
-        this.tooltipUI?.appendChild(this.tooltipStyle);
     }
 
     /**

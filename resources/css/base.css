@@ -1,10 +1,20 @@
 @scope {
-    #example_plugin_div {
-        display: flex !important;
-        flex-direction: column !important;
+    .hlt-tooltip {
+    position: fixed;
+    background: rgba(30, 30, 40, 0.97);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    z-index: 9999;
+    font-family: inherit;
+    pointer-events: none;
+    max-width: 320px;
+    font-size: 14px;
     }
-
-    #example_plugin_div img {
-        width: 100%
+    .hlt-tooltip-title {
+    font-weight: bold;
+    font-size: 15px;
+    display: block;
     }
 }

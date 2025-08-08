@@ -52,6 +52,20 @@ export default class QuickActionMouseTooltip extends Plugin {
             callback: () => {},
         } as any;
 
+        this.settings.hideShops = {
+            text: 'Hide on Shops',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideCreate = {
+            text: 'Hide on Creation UI',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
         this.settings.hideTrades = {
             text: 'Hide on Trades',
             type: SettingsTypes.checkbox,
@@ -133,6 +147,22 @@ export default class QuickActionMouseTooltip extends Plugin {
         if(this.settings.hideBank.value && (
             qaText?.startsWith("Withdraw") ||
             qaText?.startsWith("Deposit")
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideCreate.value && (
+            qaText?.startsWith("Create")
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideShops.value && (
+            qaText?.startsWith("Buy") ||
+            qaText?.startsWith("Check Price") ||
+            qaText?.startsWith("Sell")
         )) {
             this.removeTooltip();
             return; 

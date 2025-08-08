@@ -139,6 +139,10 @@ export default class QuickActionMouseTooltip extends Plugin {
             qaText?.startsWith("Unequip") ||
             qaText?.startsWith("Eat") ||
             qaText?.startsWith("Drink") ||
+            qaText?.startsWith("Discard") ||
+            qaText?.startsWith("Rub") ||
+            qaText?.startsWith("Drop") ||
+            qaText?.startsWith("Look At") ||
             qaText?.startsWith("Dig")
         )) {
             this.removeTooltip();

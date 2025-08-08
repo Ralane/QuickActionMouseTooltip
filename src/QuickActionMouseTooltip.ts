@@ -16,6 +16,7 @@ export default class QuickActionMouseTooltip extends Plugin {
 
     private lastMousePos = [0, 0];
     private quickActionText: HTMLElement | null = null;
+    private lastQuickActionText = "";
 
     /**
      * Plugin setting to enable/disable inventory tooltips.
@@ -102,6 +103,13 @@ export default class QuickActionMouseTooltip extends Plugin {
         }
 
         let qaText = this.quickActionText.children[0].textContent;
+        
+        if(qaText === this.lastQuickActionText) {
+            return;
+        }
+        
+        this.lastQuickActionText = qaText || "";
+
 
         if(this.settings.hideWalkHere.value && qaText === 'Walk Here') {
             this.removeTooltip();

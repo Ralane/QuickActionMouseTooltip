@@ -102,7 +102,7 @@ export default class QuickActionMouseTooltip extends Plugin {
             return; 
         }
 
-        let qaText = this.quickActionText.children[0].textContent;
+        let qaText = this.quickActionText.textContent;
         
         if(qaText === this.lastQuickActionText) {
             return;

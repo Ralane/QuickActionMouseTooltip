@@ -24,7 +24,50 @@ export default class QuickActionMouseTooltip extends Plugin {
         super();
 
         this.settings.hideWalkHere = {
-            text: 'Hide Walk Here',
+            text: 'Hide on Walk Here',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideInventory = {
+            text: 'Hide on Inventory',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        
+        this.settings.hideInventoryUseWith = {
+            text: 'Hide on Use With',
+            type: SettingsTypes.checkbox,
+            value: false,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideBank = {
+            text: 'Hide on Bank',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideTrades = {
+            text: 'Hide on Trades',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideSpells = {
+            text: 'Hide on Spellbook',
+            type: SettingsTypes.checkbox,
+            value: true,
+            callback: () => {},
+        } as any;
+
+        this.settings.hideUi = {
+            text: 'Hide on Misc UI',
             type: SettingsTypes.checkbox,
             value: true,
             callback: () => {},
@@ -44,7 +87,78 @@ export default class QuickActionMouseTooltip extends Plugin {
             return; 
         }
 
-        if(this.settings.hideWalkHere.value && this.quickActionText.children[0].textContent === 'Walk Here') {
+        let qaText = this.quickActionText.children[0].textContent;
+
+        if(this.settings.hideWalkHere.value && qaText === 'Walk Here') {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideSpells.value && (
+            qaText?.startsWith('Cast') ||
+            qaText?.startsWith('Auto Cast') ||
+            qaText?.startsWith('Stop Auto Casting')
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideTrades.value && (
+            qaText?.startsWith('Offer') ||
+            qaText?.startsWith('Revoke')
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideInventory.value && (
+            (qaText?.startsWith("Use") && !qaText?.includes(" with")) ||
+            qaText?.startsWith("Equip") ||
+            qaText?.startsWith("Unequip") ||
+            qaText?.startsWith("Eat") ||
+            qaText?.startsWith("Drink") ||
+            qaText?.startsWith("Dig")
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideInventoryUseWith.value && (
+            (qaText?.startsWith("Use") && qaText?.includes(" with"))
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideBank.value && (
+            qaText?.startsWith("Withdraw") ||
+            qaText?.startsWith("Deposit")
+        )) {
+            this.removeTooltip();
+            return; 
+        }
+
+        if(this.settings.hideUi.value && (
+            (qaText?.startsWith("Open") && qaText?.includes("Guide")) ||
+            qaText?.startsWith("Toggle") ||
+            qaText?.startsWith("Message") ||
+            qaText?.startsWith("Remove") ||
+            qaText?.startsWith("Show Blocked Users") ||
+            qaText?.startsWith("Show Friends List") ||
+            qaText?.startsWith("Unblock") ||
+            qaText?.includes("is blocked") ||
+            qaText?.includes("Logout") ||
+            qaText?.includes("Add a Friend") ||
+            qaText?.includes("Block a User") ||
+            qaText?.includes("Current Time") ||
+            qaText?.includes("Current Hitpoints") ||
+            qaText?.includes("Current Magic Level") ||
+            qaText?.includes("Current Range Level") ||
+            (qaText?.startsWith("Current") && qaText?.includes("Bonus")) ||
+            qaText?.includes("Reset Camera") ||
+            qaText?.includes("players currently on") ||
+            qaText?.startsWith("Chat Settings")
+        )) {
             this.removeTooltip();
             return; 
         }

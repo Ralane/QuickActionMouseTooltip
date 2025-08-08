@@ -27,6 +27,7 @@ export default class QuickActionMouseTooltip extends Plugin {
             text: 'Hide Walk Here',
             type: SettingsTypes.checkbox,
             value: true,
+            callback: () => {},
         } as any;
     }
 

@@ -111,7 +111,7 @@ export default class QuickActionMouseTooltip extends Plugin {
         this.lastQuickActionText = qaText || "";
 
 
-        if(this.settings.hideWalkHere.value && qaText === 'Walk Here') {
+        if(this.settings.hideWalkHere.value && qaText.includes('Walk Here')) {
             this.removeTooltip();
             return; 
         }

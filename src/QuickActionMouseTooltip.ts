@@ -1,4 +1,4 @@
-import {Plugin, SettingsTypes, UIManager, UIManagerScope} from "@highlite/plugin-api";
+import {Plugin, SettingsTypes, UIManager, UIManagerScope} from "@highlite/core";
 import TooltipCss from "../resources/css/base.css";
 
 export default class QuickActionMouseTooltip extends Plugin {

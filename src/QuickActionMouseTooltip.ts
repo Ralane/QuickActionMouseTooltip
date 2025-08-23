@@ -187,6 +187,7 @@ export default class QuickActionMouseTooltip extends Plugin {
             qaText?.startsWith("Remove") ||
             qaText?.startsWith("Show Blocked Users") ||
             qaText?.startsWith("Show Friends List") ||
+            qaText?.startsWith("Current weight") ||
             qaText?.startsWith("Unblock") ||
             qaText?.includes("is blocked") ||
             qaText?.includes("Logout") ||
